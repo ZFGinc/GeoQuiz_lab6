@@ -19,6 +19,14 @@
             android:layout_gravity="right"
             android:src="@drawable/cheat_icon"
             android:contentDescription="@string/cheat_button" />
+        <TextView
+            android:id="@+id/count_cheat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:layout_gravity="right"
+            android:layout_marginRight="17dp"
+            android:textSize="20dp" />
 
         <LinearLayout
             android:gravity="center"
@@ -93,6 +101,14 @@
                 android:visibility="invisible"
                 android:clickable="false"
                 android:text="@string/end_button" />
+
+            <TextView
+                android:id="@+id/version_api"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="version_api"
+                android:layout_marginTop="50dp"
+                android:textSize="16dp" />
 
         </LinearLayout>
 

@@ -3,6 +3,7 @@ package com.zfginc.geoquize
 import androidx.lifecycle.ViewModel
 
 private const val TAG = "QuizViewModel";
+private const val MAX_USE_CHEAT = 3;
 class QuizViewModel: ViewModel() {
 
     var currentIndex = 0;
@@ -36,6 +37,8 @@ class QuizViewModel: ViewModel() {
     val isCheater: Boolean
         get() = questionBank[currentIndex].isCheating == true
 
+    val lastCountCheat: Int
+        get() = if(countCheatAnswered() > 3) 0 else (MAX_USE_CHEAT-countCheatAnswered())
 
     fun setAnswer(answer: Boolean){
         questionBank[currentIndex].isAnswered = answer;

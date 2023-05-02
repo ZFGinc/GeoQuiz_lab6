@@ -3,6 +3,7 @@ package com.zfginc.geoquize
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -30,6 +31,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var questionTextView: TextView;
     private lateinit var number_question: TextView;
+    private lateinit var version_api: TextView;
+    private lateinit var count_cheat: TextView;
+
     private lateinit var toast:Toast
 
     private val quizViewModel: QuizViewModel by lazy {
@@ -51,6 +55,11 @@ class MainActivity : AppCompatActivity() {
         previos_button = findViewById(R.id.previos_button);
         questionTextView = findViewById(R.id.question_text);
         number_question = findViewById(R.id.number_question);
+        version_api = findViewById(R.id.version_api);
+        count_cheat = findViewById(R.id.count_cheat);
+
+        version_api.setText("API Level "+Build.VERSION.SDK_INT.toString());
+        count_cheat.setText(quizViewModel.lastCountCheat.toString())
 
         true_button.setOnClickListener(){
             trueButton();
@@ -145,6 +154,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun writeAnswer(answer : Boolean){
         quizViewModel.setAnswer(answer);
+
+        var lastCount = quizViewModel.lastCountCheat
+        count_cheat.setText(lastCount.toString())
+
+        if(lastCount == 0) cheat_button.isClickable = false;
 
         if(quizViewModel.isCheater){
             showToast(R.string.judgment_toast);

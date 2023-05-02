@@ -20,8 +20,8 @@
 # <p align = "center">Оглавление</p>
 - [Цели и задачи](#цели-и-задачи)
 - [Решение задач](#решение-задач)
-    - [Упражнение. Лазейка для читера](#cheat)
-    - [Упражнение. Отслеживание читов по вопросу](#find_cheat)
+    - [Упражнение. Вывод версии Android на устройстве](#api)
+    - [Упражнение. Ограничение подсказок](#count_cheat)
     - [CodeWars](#codewars)
 - [Вывод](#вывод)
 
@@ -29,289 +29,214 @@
 
 # <p align = "center">Цели и задачи</p>
 
-1.  Упражнение. Лазейка для читера
-Мошенники никогда не выигрывают... Если, конечно, им не удастся обойти вашу защиту от мошенничества. А скорее всего, они так и сделают — именно потому, что они мошенники. У GeoQuiz есть кое-какая лазейка. Пользователи могут вращать CheatActivity после чита, чтобы удалить следы обмана. После возврата к MainActivity их жульничество будет забыто. Исправьте эту ошибку, сохраняя состояние пользовательского интерфейса CheatActivity во время вращения и после уничтожения процесса.
+1.  Добавьте в макет GeoQuiz виджет TextView для вывода уровня API устройства, на котором работает программа. На рисунке показано, как должен выглядеть результат.
+<p align = "center">
+    <img src = "images/0-1.png">
+</p>
+Результат упражнения Задать текст TextView в макете не получится, потому что версия операционной системы устройства не известна до момента выполнения. Найдите функцию TextView для задания текста в справочной странице TextView в документации Android. Вам нужна функция, получающая один аргумент — строку (или CharSequence). Для настройки размера и гарнитуры текста используйте атрибуты XML, перечисленные в описании TextView.
  
-2.	Упражнение. Отслеживание читов по вопросу
-В настоящее время, когда пользователь читерит на одном вопросе, он считается читером по всем вопросам. Обновите GeoQuiz, чтобы отслеживать, сколько раз пользователь нарушал закон. Когда пользователь использует чит для ответа на заданный вопрос, осуждайте его всякий раз, когда он пытается ответить на этот вопрос. Когда пользователь отвечает на вопрос, с которым он не жульничал, покажите правильный или неправильный ответ.
+2.	Ограничьте пользователя тремя подсказками. Храните информацию о том, сколько раз пользователь подсматривал ответ, и выводите количество оставшихся подсказок под кнопкой. Если ни одной подсказки не осталось, то кнопка получения подсказки блокируется.
 
 3. CodeWars
- - [Simple multiplication](https://www.codewars.com/kata/583710ccaa6717322c000105)
- - [Remove String Spaces](https://www.codewars.com/kata/57eae20f5500ad98e50002c5)
- - [String repeat](https://www.codewars.com/kata/57a0e5c372292dd76d000d7e)
- - [Function 1 - hello world](https://www.codewars.com/kata/523b4ff7adca849afe000035)
- - [Square(n) Sum](https://www.codewars.com/kata/515e271a311df0350d00000f)
- - [Century From Year](https://www.codewars.com/kata/5a3fe3dde1ce0e8ed6000097)
- - [Is n divisible by x and y?](https://www.codewars.com/kata/5545f109004975ea66000086)
- - [Even or Odd](https://www.codewars.com/kata/53da3dbb4a5168369a0000fe)
+ - [Profile CodeWars](https://www.codewars.com/users/ZFGinc)
+ - [Alphabet war](https://www.codewars.com/kata/59377c53e66267c8f6000027)
+ - [The 'spiraling' box](https://www.codewars.com/kata/63b84f54693cb10065687ae5)
+ - [Count the Digit](https://www.codewars.com/kata/566fc12495810954b1000030)
+ - [Fix string case](https://www.codewars.com/kata/5b180e9fedaa564a7000009a)
+ - [Geometric Progression Sequence](https://www.codewars.com/kata/55caef80d691f65cb6000040)
+ - [Sum of odd numbers](https://www.codewars.com/kata/55fd2d567d94ac3bc9000064)
 
 
 ***
 
 # <p align = "center">Решение задач</p>
 
-## <p align = "center">Упражнение. Лазейка для читера</p>
+## <p align = "center">Упражнение. Вывод версии Android на устройстве</p>
 
-Первоначально я добавил новую кнопку ImageButton в правый верхний угол для использования её в качестве перехода на Activity с подсказкой.
+Добавил через `XML` разметку `TextView` для отображения версии `API Android`.
+Через код запрашиваю текущую версию и вывожу её.
+
+```kotlin
+version_api.setText("API Level "+Build.VERSION.SDK_INT.toString());
+```
+
+Так же проверил её на разных устройствах, дабы убедиться в работоспособности
 
 <p align = "center">
     <img src = "images/1-1.png">
-    <br>
     <img src = "images/1-2.png">
 </p>
 
-Для перехода между Activity я использоваал `Intent` 
 
-Код для перехода к другой Activity:
-```kotlin
-(MainActivity.kt)
-cheat_button.setOnClickListener(){
-    val intent = CheatActivity.newIntent(this@MainActivity, quizViewModel.currentQuestionAnswer)
-    startActivityForResult(intent, REQUEST_CODE_CHEAT)
-}
-```
+## <p align = "center">Упражнение. Ограничение подсказок</p>
 
-Код самой активити:
+Для начала изменил класс `QuizViewModel.kt` - добавил константу для определения максимального количества подсказок и функцию, которая возвращает оставшееся количество подсказок.
+
 ```kotlin
-(CheatActivity.kt)
 package com.zfginc.geoquize
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 
-const val EXTRA_ANSWER_SHOWN = "com.bignerdranch.android.geoquiz.answer_shown"
-private const val EXTRA_ANSWER_IS_TRUE = "com.bignerdranch.android.geoquiz.answer_is_true"
+private const val MAX_USE_CHEAT = 3;
 
-class CheatActivity : AppCompatActivity() {
-
-    private lateinit var back_button: Button
-    private lateinit var cheat_button: Button
-    private lateinit var question_answer: TextView
-
-    private var answerIsTrue = false
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cheat)
-
-        answerIsTrue = intent.getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false)
-
-        back_button = findViewById(R.id.back_button)
-        cheat_button = findViewById(R.id.cheat_button)
-        question_answer = findViewById(R.id.question_answer)
-
-        back_button.setOnClickListener {
-            finish();
-        }
-        cheat_button.setOnClickListener {
-            val answerText = when {
-                answerIsTrue -> R.string.true_button
-                else -> R.string.false_button
-            }
-            question_answer.setText(answerText)
-            setAnswerShownResult(true)
-        }
-    }
-
-    private fun setAnswerShownResult(isAnswerShown: Boolean) {
-        val data = Intent().apply {
-            putExtra(EXTRA_ANSWER_SHOWN, isAnswerShown)
-        }
-        setResult(Activity.RESULT_OK, data)
-    }
-
-    companion object {
-        fun newIntent(packageContext: Context, answerIsTrue: Boolean): Intent {
-            return Intent(packageContext, CheatActivity::class.java).apply {
-                putExtra(EXTRA_ANSWER_IS_TRUE, answerIsTrue)
-            }
-        }
-    }
-}
-```
-
-Работает оно следующим образом:
-1. Заморозить главную Activity .
-2. Поверх главной Activity отрисовать новую.
-3. Дать доступ для работы новой Activity.
-4. После завершения работы с новой Activity мы её отключаем и сборщик мусора её забирает в небытие.
-5. Разморозить главную Activity.
-
-Таким образом мы не теряем данные с нашей главной Activity и при этом с помощью `startActivityForResult` мы можем получить данные с новой Activity и обработать их в главной.
-
-```kotlin
-override fun onActivityResult(requestCode: Int,
-                              resultCode: Int,
-                              data: Intent?) {
-    super.onActivityResult(requestCode, resultCode, data)
-    if (resultCode != Activity.RESULT_OK) {
-        return
-    }
-    quizViewModel.setCurrentQuestionIsCheat()
-}
-```
-
-Для этого я доработал классы `Question.kt` и `QuizViewModel.kt`:
-```kotlin
-data class Question(@StringRes val textResId: Int, val answer : Boolean) {
-    var isAnswered: Boolean? = null;
-    var isCheating: Boolean? = false; //Это новое
-}
-```
-
-```kotlin
 class QuizViewModel: ViewModel() {
     ...
 
-    //Это новое
-    val isCheater: Boolean
-        get() = questionBank[currentIndex].isCheating == true
+    val lastCountCheat: Int
+        get() = if(countCheatAnswered() > 3) 0 else (MAX_USE_CHEAT-countCheatAnswered())
 
-    //Это новое
-    fun setCurrentQuestionIsCheat(){
-        questionBank[currentIndex].isCheating = true;
-    }
+    fun countCheatAnswered() : Int {
+        var count : Int = 0;
+        for(quest in questionBank){
+            if(quest.isCheating == true) count++;
+        }
 
-    //Это переделано
-    fun getAnswers() : BooleanArray? {
-        var answers = BooleanArray(16);
-
-        for(i in 0..7)
-            answers[i] = questionBank[i].isAnswered == true;
-
-        for(i in 8..15)
-            answers[i] = questionBank[i-8].isCheating == true;
-
-        return answers;
-    }
-
-    //Это переделано
-    fun setAnswers(answers : BooleanArray?) {
-        for(i in 0..7)
-            questionBank[i].isAnswered = answers?.get(i);
-        for(i in 8..15)
-            questionBank[i-8].isCheating = answers?.get(i);
+        return count;
     }
 
     ...
 }
 ```
 
-В последнем отрывке кода есть проблема в прямой зависимости циклов от количества вопросов. Это я потом переделаю!
+Далее в `MainActivity.kt` добавил связь с текстом под кнопкой, который так же был добавлен заранее. В самом начале вывожу количество оставшихся подсказок.
 
-Таким образом получается достичь работы псевдо-чита для игры.
-
-<p align = "center">
-    <img src = "images/1-3.png">
-    <br>
-    <img src = "images/1-4.png">
-</p>
-
-## <p align = "center">Упражнение. Отслеживание читов по вопросу</p>
-
-Первым делом я сделал оповещение, что данный вопрос был отвечен после просмотра правильного ответа и не в зависимости от того какой был дан ответ, игра будет осуждать игрока за то, что подсматривал. Это можно увидеть на предыдущем скриншоте.
-
-Далее была переработана финальная Activity для просмора статистики.
-По большей части, именно для этого я и модифицировал класс `QuizViewModel.kt`.
-
-Были введены изменения для класса `AllAnswers.kt`:
-Теперь добавляется пометка к ответам там, где была использована подсказка
 ```kotlin
-if(quizViewModel.currentQuestionAnswered == true){
-
-+++         if(quizViewModel.isCheater) text_answer.setText("Верно (читер)");
-+++         else  text_answer.setText("Верно");
-
-            if(quizViewModel.currentQuestionAnswer){
-                text_answer.setTextColor(Color.GREEN);
-            }
-            else{
-                text_answer.setTextColor(Color.RED);
-            }
-        }
-        else{
-
-+++         if(quizViewModel.isCheater) text_answer.setText("Не верно (читер)");
-+++         else  text_answer.setText("Не верно");
-
-            if(quizViewModel.currentQuestionAnswer){
-                text_answer.setTextColor(Color.RED);
-            }
-            else{
-                text_answer.setTextColor(Color.GREEN);
-            }
-        }
+count_cheat.setText(quizViewModel.lastCountCheat.toString())
 ```
 
-<p align = "center">
-    <img src = "images/2-2.png">
-</p>
-
-Так же добавил новый метод для отображения общего числа использования подсказок:
+Так же вызываю эту строку после выбора ответа, который был выбран с помощью подсказки и проверяю, если подсказок не осталось.
 
 ```kotlin
-private fun addStatistic(){
-    val title = LinearLayout(this)
-    title.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-    title.orientation = LinearLayout.HORIZONTAL;
-    val otstup_quest = TextView (this);
-    title.addView(otstup_quest);
-    mainLinearLayout.addView(title);
+private fun writeAnswer(answer : Boolean){
+    quizViewModel.setAnswer(answer);
 
-    val layout = LinearLayout(this)
-    layout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-    layout.orientation = LinearLayout.HORIZONTAL;
++++ var lastCount = quizViewModel.lastCountCheat
++++ count_cheat.setText(lastCount.toString())
 
-    val text_cheat = TextView (this);
-    text_cheat.setText("Количество ответов с читом");
-    text_cheat.setWidth(800);
++++ if(lastCount == 0) cheat_button.isClickable = false;
 
-    val text_answer = TextView (this);
-    text_answer.setText(quizViewModel.countCheatAnswered().toString());
-
-    layout.addView(text_cheat);
-    layout.addView(text_answer)
-
-    mainLinearLayout.addView(layout);
-
-    var space = Space(this);
-    space.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 10);
-
-    mainLinearLayout.addView(space);
-
-    qsuizViewModel.moveToNext()
+    if(quizViewModel.isCheater){
+        showToast(R.string.judgment_toast);
+    }
 }
 ```
 
 <p align = "center">
-    <img src = "images/2-3.png">
-</p>
-
-В итоге получилось так:
-
-<p align = "center">
     <img src = "images/2-1.png">
+    <img src = "images/2-2.png">
 </p>
-
-***
 
 
 ## <p align = "center">CodeWars</p>
 
-### [Simple multiplication](https://www.codewars.com/kata/583710ccaa6717322c000105)
-### [Remove String Spaces](https://www.codewars.com/kata/57eae20f5500ad98e50002c5)
-### [String repeat](https://www.codewars.com/kata/57a0e5c372292dd76d000d7e)
-### [Function 1 - hello world](https://www.codewars.com/kata/523b4ff7adca849afe000035)
-### [Square(n) Sum](https://www.codewars.com/kata/515e271a311df0350d00000f)
-### [Century From Year](https://www.codewars.com/kata/5a3fe3dde1ce0e8ed6000097)
-### [Is n divisible by x and y?](https://www.codewars.com/kata/5545f109004975ea66000086)
-### [Even or Odd](https://www.codewars.com/kata/53da3dbb4a5168369a0000fe)
+### [Alphabet war](https://www.codewars.com/kata/59377c53e66267c8f6000027)
+```kotlin
+fun alphabetWar(fight: String): String {
+	var score = 0
+
+    for (letter in fight) {
+		if (letter == 'w') score -= 4
+		if (letter == 'p') score -= 3
+		if (letter == 'b') score -= 2
+		if (letter == 's') score -= 1
+		if (letter == 'm') score += 4
+		if (letter == 'q') score += 3
+		if (letter == 'd') score += 2
+		if (letter == 'z') score += 1
+	}
+
+    if (score < 0) return "Left side wins!"
+    else if (score > 0) return  "Right side wins!"
+    else return "Let's fight again!"
+}
+```
+<p align = "center">
+    <img src = "images/3-1.png">
+</p>
+
+### [The 'spiraling' box](https://www.codewars.com/kata/63b84f54693cb10065687ae5)
+```kotlin
+fun createBox(width: Int, length: Int): Array<IntArray> {
+    val array = Array(length) { IntArray(width) }
+
+    for (row in 0 until length) {
+        for (col in 0 until width) {
+            array[row][col] = minOf(row, col, width - col - 1, length - row - 1) + 1
+        }
+    }
+    return array
+}
+```
+<p align = "center">
+    <img src = "images/3-2.png">
+</p>
+
+### [Count the Digit](https://www.codewars.com/kata/566fc12495810954b1000030)
+```kotlin
+package countdig
+
+fun nbDig(n:Int, d:Int):Int {
+    var num:Int 
+    var res =0    
+   
+    for (i in 0..n){
+        num = i*i
+        while (num!=0) {
+          if (num%10==d)
+          res++
+          num/=10;
+        }        
+    }
+    if (d==0) {
+        res++
+    }
+    return res
+}
+```
+<p align = "center">
+    <img src = "images/3-3.png">
+</p>
+
+### [Fix string case](https://www.codewars.com/kata/5b180e9fedaa564a7000009a)
+```kotlin
+object FixStringCase {
+    fun solve(s: String): String{
+        if (s.count { it.isUpperCase() } > s.length / 2) return s.toUpperCase() 
+        else return s.toLowerCase()
+
+    }
+}
+```
+<p align = "center">
+    <img src = "images/3-4.png">
+</p>
+
+### [Geometric Progression Sequence](https://www.codewars.com/kata/55caef80d691f65cb6000040)
+```kotlin
+fun geometricSequenceElements(a: Int, r: Int, n: Int): String {
+    var str = a.toString()
+    var c = a
+    for(i in 2..n){
+        c = c*r
+        str += ", "+c.toString()
+    } 
+    return str
+}
+```
+<p align = "center">
+    <img src = "images/3-5.png">
+</p>
+
+### [Sum of odd numbers](https://www.codewars.com/kata/55fd2d567d94ac3bc9000064)
+```kotlin
+fun rowSumOddNumbers(n: Int): Int = n*n*n
+```
+<p align = "center">
+    <img src = "images/3-6.png">
+</p>
+
+***
 
 # <p align = "center">Вывод</p>
 
-Выполнив *лабораторную работу №5*, совершенствую навыки работы со средой разработки `Android Studion` и работы с языком `Kotlin`. 
+Выполнив *лабораторную работу №6*, совершенствую навыки работы со средой разработки `Android Studion` и работы с языком `Kotlin`. 

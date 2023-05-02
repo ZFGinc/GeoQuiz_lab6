@@ -2946,6 +2946,7 @@ id contiguous
 id continuousVelocity
 id coordinator
 id cos
+id count_cheat
 id counterclockwise
 id cradle
 id currentState
@@ -3301,6 +3302,7 @@ id uniform
 id unlabeled
 id up
 id useLogo
+id version_api
 id vertical_only
 id view_offset_helper
 id view_transition

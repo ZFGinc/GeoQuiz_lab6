@@ -21,6 +21,7 @@ id all_answers
 id all_answers_title
 id back_button
 id cheat_button
+id count_cheat
 id end_button
 id false_button
 id next_button
@@ -33,6 +34,7 @@ id question_text
 id restart_button
 id title_question
 id true_button
+id version_api
 layout activity_all_answers
 layout activity_cheat
 layout activity_main
