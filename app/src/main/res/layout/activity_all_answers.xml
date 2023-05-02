@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top|center_horizontal"
+    android:orientation="vertical"
+    tools:context=".AllAnswers">
+
+    <TextView
+        android:id="@+id/all_answers_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/all_answers_title"
+        android:textSize="20dp"
+        android:padding="15dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:id="@+id/all_answers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/procent_answers_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Вы ответили верно: 0/0   -   0 %"
+        android:textSize="16dp"
+        android:padding="15dp" />
+
+    <Button
+        android:id="@+id/restart_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:gravity="bottom|center_horizontal"
+        android:text="@string/restart_button" />
+
+</LinearLayout>

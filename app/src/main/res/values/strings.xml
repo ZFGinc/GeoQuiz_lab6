@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">GeoQuize</string>
+
+    <string name="true_button">Верно</string>
+    <string name="false_button">Не верно</string>
+    <string name="back_button">Назад</string>
+
+    <string name="next_button">Следующий вопрос</string>
+    <string name="previos_button">Предыдущий вопрос</string>
+    <string name="cheat_button">Считерить</string>
+
+    <string name="next_toast">Очень жаль</string>
+    <string name="currect_toast">Ответ верный!</string>
+    <string name="incurrect_toast">Ответ не верный!</string>
+
+    <string name="notification_title">Хорошая работа!</string>
+
+    <string name="warning_text">Вы правда хотите считерить?</string>
+    <string name="show_answer_button">Показать ответ</string>
+    <string name="judgment_toast">Читерить плохо...</string>
+
+    //Вопросы
+    <string name="question_0">Столица Казахстана - Нур-Султан?</string>
+    <string name="question_1">Страна Эсватини называлась Свазилендом?</string>
+    <string name="question_2">Самая большая пустыня в мире - Гоби?</string>
+    <string name="question_3">Андорра - самая маленькая в мире страна?</string>
+    <string name="question_4">Все страны Северной и Центральной Америки имеют выход к морю?</string>
+    <string name="question_5">Самый крупный по населению город - Москва?</string>
+    <string name="question_6">Бурдж Халифа - самая высокая башня в мире?</string>
+    <string name="question_7">Атомиум - достопримечательность Франции?</string>
+    //
+
+    <string name="all_answers_title">Итоговая информация</string>
+    <string name="restart_button">Начать заново</string>
+    <string name="end_button">Статистика</string>
+</resources>

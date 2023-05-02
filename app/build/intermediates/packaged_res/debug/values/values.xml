@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <color name="black">#FF000000</color>
+    <color name="blue_200">#FF5757FF</color>
+    <color name="blue_500">#3636FF</color>
+    <color name="green_500">#36FF3D</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="red_500">#FF5A5A</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="all_answers_title">Итоговая информация</string>
+    <string name="app_name">GeoQuize</string>
+    <string name="back_button">Назад</string>
+    <string name="cheat_button">Считерить</string>
+    <string name="currect_toast">Ответ верный!</string>
+    <string name="end_button">Статистика</string>
+    <string name="false_button">Не верно</string>
+    <string name="incurrect_toast">Ответ не верный!</string>
+    <string name="judgment_toast">Читерить плохо...</string>
+    <string name="next_button">Следующий вопрос</string>
+    <string name="next_toast">Очень жаль</string>
+    <string name="notification_title">Хорошая работа!</string>
+    <string name="previos_button">Предыдущий вопрос</string>
+    <string name="question_0">Столица Казахстана - Нур-Султан?</string>
+    <string name="question_1">Страна Эсватини называлась Свазилендом?</string>
+    <string name="question_2">Самая большая пустыня в мире - Гоби?</string>
+    <string name="question_3">Андорра - самая маленькая в мире страна?</string>
+    <string name="question_4">Все страны Северной и Центральной Америки имеют выход к морю?</string>
+    <string name="question_5">Самый крупный по населению город - Москва?</string>
+    <string name="question_6">Бурдж Халифа - самая высокая башня в мире?</string>
+    <string name="question_7">Атомиум - достопримечательность Франции?</string>
+    <string name="restart_button">Начать заново</string>
+    <string name="show_answer_button">Показать ответ</string>
+    <string name="true_button">Верно</string>
+    <string name="warning_text">Вы правда хотите считерить?</string>
+    <style name="Theme.GeoQuize" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        
+        <item name="colorPrimary">@color/blue_500</item>
+        <item name="colorPrimaryVariant">@color/blue_500</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <item name="colorSecondary">@color/blue_200</item>
+        <item name="colorSecondaryVariant">@color/blue_500</item>
+        <item name="colorOnSecondary">@color/black</item>
+        
+        <item name="android:statusBarColor" ns1:targetApi="21">?attr/colorPrimaryVariant</item>
+        
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+</resources>
